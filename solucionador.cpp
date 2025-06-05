@@ -1,7 +1,14 @@
 #include "solucionador.hpp"
-#include <queue> // importamos la estructura de datos cola
-#include <map>
+#include <queue> // esto importamos para usar la estructura de datos cola 
+#include <map> // para almacenar las relaciones entre celdas
+#include <chrono> // esto usamos para medir el tiempo de pausa cada vez que imprimimos
+#include <thread> // este usamos para las pausas en ejecucion y simular animacion del camino
+#include <iostream> // para imprimir en pantalla 
+#include <cstdlib> // esto usamos para limpiar la pantalla mientras imprimimos
+
 using namespace std;
+
+// aca creamos la funcion principal que resulve el laberinto con el algoritmo bfs
 
 
 // aca vamos a crear la funcion que resulve el camino con bfs  Breadth-First Search (Búsqueda en Anchura)
@@ -30,7 +37,7 @@ bool resolver_camino(vector<vector<string>> &laberinto, int fila_inicio, int col
         {0, -1}
     };
 
-    // aca creamos el ciclo que procesa cada celda del laberinto por orden de llegada, es decir, procesa la cola hasta varciar
+            // aca creamos el ciclo que procesa cada celda del laberinto por orden de llegada, es decir, procesa la cola hasta varciar
     while (!cola_de_celdas.empty()) {
         pair<int, int> celda_actual = cola_de_celdas.front();// tomamos la primera celda
         cola_de_celdas.pop(); // la funcion procesa y luego elimina
@@ -38,24 +45,46 @@ bool resolver_camino(vector<vector<string>> &laberinto, int fila_inicio, int col
         int fila_actual = celda_actual.first; 
         int columna_actual = celda_actual.second;
 
-        // aca ponemos una condicional de que, si llegamos a la celda de destino reconstruimos el camino
+        // aca comparamos que, si llegamos a la celda de destino reconstruimos el camino
         if (fila_actual == fila_destino && columna_actual == columna_destino) {
-            pair<int, int> celda = {fila_actual, columna_actual};
-            
-            // aca creamos otro ciclo, creamos un par para reconstruir el camino desde la salida hasta el inicio. 
-            while (celda != make_pair(fila_inicio, columna_inicio)) {
-                int fila_celda = celda.first;
-                int columna_celda = celda.second;
+            // Creamos un vector para guardar el camino
+            vector<pair<int, int>> camino;
 
-                // aca le decimos que si la celda que se encontro no es la meta que la marque con un gato
-                if (laberinto[fila_celda][columna_celda] != "🟩") {
-                    laberinto[fila_celda][columna_celda] = "🐱";
-                }
-                celda = celda_anterior[celda];
+            // Reconstruimos el camino desde la meta hasta el inicio
+            pair<int, int> celda = {fila_actual, columna_actual};
+            while (celda != make_pair(fila_inicio, columna_inicio)) {
+            camino.push_back(celda);
+            celda = celda_anterior[celda];
             }
-            // aca indicamos que encontramos el camino completo
-            return true;
+            // Agregamos la celda inicio también (opcional, para marcar todo)
+            camino.push_back(make_pair(fila_inicio, columna_inicio));
+
+            // Ahora invertimos el camino para que quede del inicio al destino
+            reverse(camino.begin(), camino.end());
+
+            // Pintamos el camino en orden
+            for (const auto& c : camino) {
+                int fila_celda = c.first;
+                int columna_celda = c.second;
+
+                if (laberinto[fila_celda][columna_celda] != "🟩") {
+                laberinto[fila_celda][columna_celda] = "🐱";
+
+                    system("clear");
+                    
+                    for (const auto& fila : laberinto) {
+                        for (const auto& celda : fila) {
+                            cout << celda << " ";
+                    }
+                    cout << endl;
+                }
+                this_thread::sleep_for(chrono::milliseconds(100));
+            }
         }
+
+        return true;
+    }
+
 
         // aca creamos un for para que recorra todas las direcciones 
         for (pair<int, int> direccion : direcciones_movimiento) {
