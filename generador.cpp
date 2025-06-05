@@ -1,6 +1,6 @@
 // importamos las librerias que vamos a utilizar para el juego
 #include "generador.hpp"
-#include <algorithm>
+#include <algorithm> // libreria y usamos shuffle de esta libreria para mezclar
 #include <random>
 using namespace std;
 
@@ -14,8 +14,8 @@ vector<vector<string>> generador_de_laberinto(int alto, int ancho, string simbol
 }
 
 // aca creamos una funcion recursiva para generar el camino con el algoritmo backtraking
-void crear_camino(vector<vector<string>> &laberinto, int fila, int columna, int profundidad, int maxima_profundidad) {
-    if (profundidad > maxima_profundidad) return;
+void crear_camino(vector<vector<string>> &laberinto, int fila, int columna) {
+    
 
     // marcamos la celda actual como camino 
     laberinto[fila][columna] = "⬜";
@@ -40,6 +40,7 @@ void crear_camino(vector<vector<string>> &laberinto, int fila, int columna, int 
         int nueva_fila = fila + movimiento.first;
         int nueva_columna = columna + movimiento.second;
 
+        
         // aca verificamos si la nueva posicion esta dentro del laberinto y que sea una pared
         if (nueva_fila >= 0 && nueva_fila < laberinto.size() -1 && nueva_columna >= 0 && nueva_columna < laberinto[0].size() -1 && laberinto[nueva_fila][nueva_columna] == "🟫") {
             
@@ -48,7 +49,7 @@ void crear_camino(vector<vector<string>> &laberinto, int fila, int columna, int 
 
 
             // aca hacemos la recursion, repetimos el proceso desde la nueva celda
-            crear_camino(laberinto, nueva_fila, nueva_columna, profundidad + 1, maxima_profundidad);
+            crear_camino(laberinto, nueva_fila, nueva_columna);
         }
     }
 }
