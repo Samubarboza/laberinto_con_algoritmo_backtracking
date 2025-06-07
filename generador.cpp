@@ -20,7 +20,7 @@ void crear_camino(vector<vector<string>> &laberinto, int fila, int columna) {
     // marcamos la celda actual como camino 
     laberinto[fila][columna] = "⬜";
     // definimos el punto de partida
-    laberinto[1][0] = "🟥";
+
     //definimos la meta final
     laberinto[alto_del_laberinto -2][ancho_del_laberinto -1] = "🟩";
 
@@ -42,7 +42,7 @@ void crear_camino(vector<vector<string>> &laberinto, int fila, int columna) {
 
         
         // aca verificamos si la nueva posicion esta dentro del laberinto y que sea una pared
-        if (nueva_fila >= 0 && nueva_fila < laberinto.size() -1 && nueva_columna >= 0 && nueva_columna < laberinto[0].size() -1 && laberinto[nueva_fila][nueva_columna] == "🟫") {
+        if (nueva_fila >= 0 && nueva_fila < laberinto.size() && nueva_columna >= 0 && nueva_columna < laberinto[0].size() && laberinto[nueva_fila][nueva_columna] == "🟫") {
             
             // rompemos la pared entre la celda actual y la nueva
             laberinto[fila + movimiento.first / 2][columna + movimiento.second / 2] = "⬜";

@@ -20,7 +20,7 @@ bool resolver_camino(vector<vector<string>> &laberinto, int fila_inicio, int col
     // aca creamos una matriz para saber que celdas ya fueron visitadas
     vector<vector<bool>> celda_visitada(cantidad_filas, vector<bool>(cantidad_columnas, false));
 
-    // aca vamos a crear un mapa para guardar de donde vino cada celda (clave = actual, valor = anterior)
+    // mapa que guarda la celda desde la cual llego, y la celda en la que se encuentra para dps reconstruir el camino
     map<pair<int, int>, pair<int, int>> celda_anterior;
 
     // cola para procesar las celdas en orden (bfs usa cola) guardamos la celda inicial
@@ -93,7 +93,6 @@ bool resolver_camino(vector<vector<string>> &laberinto, int fila_inicio, int col
 
             // aca chequeamos si esta dentro de los limites del laberinto
             bool esta_dentro_de_limites = fila_siguiente >= 0 && fila_siguiente < cantidad_filas && columna_siguiente >= 0 && columna_siguiente < cantidad_columnas;
-
 
             // si esta dentro de los limites, y no fue visitada, si es un espacio libre o un objetivo, entonces pasamos a lo siguiente
             if (esta_dentro_de_limites && !celda_visitada[fila_siguiente][columna_siguiente] && (laberinto[fila_siguiente][columna_siguiente] == "⬜" || laberinto[fila_siguiente][columna_siguiente] == "🟩")) {
